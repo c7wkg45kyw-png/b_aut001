@@ -1,0 +1,79 @@
+openapi: 3.0.3
+info:
+  title: BAUT001 Authentication Module API
+  version: 1.0.0
+  description: Single JWT authentication service for decoupled ERP modules. Tokens include merchant_id, flexible audience, client_id, type, and scopes.
+servers:
+  - url: /api/v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username: { type: string, example: admin }
+        password: { type: string, example: admin1234 }
+    TokenPayload:
+      type: object
+      properties:
+        iss: { type: string, example: https://global-commerce.com }
+        sub: { type: string, example: usr_987654321 }
+        aud: { type: string, example: sku_module }
+        exp: { type: integer, format: int64 }
+        iat: { type: integer, format: int64 }
+        merchant_id: { type: string, example: mch_555666777 }
+        client_id: { type: string, example: vendor_portal_web }
+        type: { type: string, example: USER }
+        scopes:
+          type: array
+          items: { type: string }
+          example: [sku:read, sku:update, pos:create, pos:read]
+    TokenResponse:
+      type: object
+      properties:
+        access_token: { type: string }
+        token_type: { type: string, example: Bearer }
+        expires_in: { type: integer, format: int64 }
+        payload:
+          $ref: '#/components/schemas/TokenPayload'
+        user:
+          type: object
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login and issue a single JWT token
+      description: Authenticates against database users using username and password only. Audience, client_id, and scopes are resolved from server-side config and user assignments.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+                  data:
+                    $ref: '#/components/schemas/TokenResponse'
+        '400': { description: Invalid credentials or payload }
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Get current authenticated user profile
+      security:
+        - bearerAuth: []
+      responses:
+        '200': { description: Current user profile }
+        '401': { description: Invalid token }
