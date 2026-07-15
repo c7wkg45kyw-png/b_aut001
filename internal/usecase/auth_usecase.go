@@ -15,6 +15,7 @@ import (
 
 type Claims struct {
 	MerchantID string   `json:"merchant_id"`
+	BranchID   string   `json:"branch_id"`
 	ClientID   string   `json:"client_id"`
 	Type       string   `json:"type"`
 	Scopes     []string `json:"scopes"`
