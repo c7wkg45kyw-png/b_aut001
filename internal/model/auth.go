@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type LoginRequest struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
@@ -25,17 +23,15 @@ type TokenPayload struct {
 }
 
 type UserProfile struct {
-	ID          string    `json:"id"`
-	MerchantID  string    `json:"merchant_id"`
-	Username    string    `json:"username"`
-	DisplayName string    `json:"display_name"`
-	Email       string    `json:"email"`
-	ClientID    string    `json:"client_id"`
-	Type        string    `json:"type"`
-	Status      string    `json:"status"`
-	Scopes      []string  `json:"scopes"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID          string   `json:"id"`
+	MerchantID  string   `json:"merchant_id"`
+	Username    string   `json:"username"`
+	DisplayName string   `json:"display_name"`
+	Email       string   `json:"email"`
+	ClientID    string   `json:"client_id"`
+	Type        string   `json:"type"`
+	Status      string   `json:"status"`
+	Scopes      []string `json:"scopes"`
 }
 
 type AuthContext struct {

@@ -97,5 +97,5 @@ func (u *AuthUsecase) issueToken(user entity.User, scopes []string, audience, cl
 }
 
 func mapUser(user entity.User, scopes []string) model.UserProfile {
-	return model.UserProfile{ID: user.ID.String(), MerchantID: user.MerchantID, Username: user.Username, DisplayName: user.DisplayName, Email: user.Email, ClientID: user.ClientID, Type: user.UserType, Status: user.Status, Scopes: scopes, CreatedAt: user.CreatedAt, UpdatedAt: user.UpdatedAt}
+	return model.UserProfile{ID: user.ID.String(), MerchantID: user.MerchantID, Username: user.Username, DisplayName: user.DisplayName, Email: user.Email, ClientID: user.ClientID, Type: user.UserType, Status: user.Status, Scopes: scopes}
 }
